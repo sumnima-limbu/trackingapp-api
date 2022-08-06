@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('app_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('admins', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
-            $table->string('mobile_number');
-            $table->string('email')->unique();
+            $table->string('email');
+            $table->string('password');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('app_users');
+        Schema::dropIfExists('admins');
     }
 };
