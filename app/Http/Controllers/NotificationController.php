@@ -39,7 +39,7 @@ class NotificationController extends Controller
         } catch (\Exception $e) {
 
             $response = [
-                'message' => 'Something went wrong',
+                'message' => 'Added successfully.',
                 'success' => false
             ];
 
