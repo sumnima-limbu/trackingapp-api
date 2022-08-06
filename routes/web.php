@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function() {
+    return view('auth.login');
 });
 
-Auth::routes();
+Route::post('/auth/save', [MainController::class, 'save'])->name('auth.save');
+Route::post('/auth/check', [MainController::class, 'check'])->name('auth.check');
+Route::get('/auth/logout', [MainController::class, 'logout'])->name('auth.logout');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware'=>['AuthCheck']], function(){
+    Route::get('/auth/login', [MainController::class, 'login'])->name('login');
+    Route::get('/auth/register', [MainController::class, 'register'])->name('register');    
+
+    Route::get('/admin/dashboard', [MainController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/settings', [MainController::class, 'settings'])->name('admin.settings');
+    Route::get('/admin/profile', [MainController::class, 'profile'])->name('admin.profile');
+    Route::get('/admin/staff', [MainController::class, 'staff'])->name('admin.staff');
+
+});
