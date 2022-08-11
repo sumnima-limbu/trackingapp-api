@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Circle;
 use App\Models\User;
+use App\Models\Circle;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CircleController extends Controller
 {
@@ -121,7 +122,7 @@ class CircleController extends Controller
         } catch (\Exception $e) {
 
             $response = [
-                'message' => 'Something went wrong',
+                'message' => 'Added to circle.',
                 'success' => false
             ];
 
