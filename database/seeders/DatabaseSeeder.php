@@ -19,18 +19,22 @@ class DatabaseSeeder extends Seeder
         // Seed Users
         User::factory(1)->create([
             'name' => 'Sumnima Limbu',
-            'email' => 'sumnima@gmail.com'
+            'email' => 'sumnima@gmail.com',
+            'phone_number' => '9804018923',
         ]);
 
         User::factory(1)->create([
             'name' => 'Sudip Limbu',
-            'email' => 'sudip@gmail.com'
+            'email' => 'sudip@gmail.com',
+            'phone_number' => '9842533343',
+
         ]);
 
 
         User::factory(1)->create([
             'name' => 'Pushpa Limbu',
-            'email' => 'pushpa@gmail.com'
+            'email' => 'pushpa@gmail.com',
+            'phone_number' => '9816393322',
         ]);
 
         User::factory(10)->create();

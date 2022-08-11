@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('circles', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->bigInteger('friend_id');
             $table->boolean('status')->default(false);
             $table->timestamps();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 
