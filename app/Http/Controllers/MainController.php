@@ -2,21 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Admin;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class MainController extends Controller
 {
-    function login() {
+    public function index() {
+        $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
+
+        return view('admin.profile', $data);
+
+        // Mail::send('emails.notification', function($message){
+        //     $message->to('sumnimaklimbu@gmail.com', 'Sumnima')
+        //     ->subject('Notification Sent');
+        // });
+    }
+
+    public function login() {
         return view('auth.login');
     }
 
-    function register() {
+    public function register() {
         return view('auth.register');
     }
 
-    function save(Request $request) {
+    public function save(Request $request) {
         // validate requests
         $request->validate([
             'name' => 'required',
@@ -38,7 +50,7 @@ class MainController extends Controller
         }
     }
 
-    function check(Request $request) {
+    public function check(Request $request) {
         //validate requests 
         $request->validate([
             'email' => 'required|email',
@@ -60,30 +72,22 @@ class MainController extends Controller
         }
     }
 
-    function logout() {
+    public function logout() {
         if(session()->has('LoggedUser')){
             session()->pull('LoggedUser');
             return redirect('/auth/login');
         }
     }
 
-    function dashboard() {
-        $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
-        return view('admin.dashboard', $data);
-    }
+    // function settings() {
+    //     $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
+    //     return view('admin.settings', $data);
+    // }
 
-    function settings() {
-        $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
-        return view('admin.settings', $data);
-    }
+    
 
-    function profile() {
-        $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
-        return view('admin.profile', $data);
-    }
-
-    function staff() {
-        $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
-        return view('admin.staff', $data);
-    }
+    // function staff() {
+    //     $data = ['LoggedUserInfo'=>Admin::where('id', '=', session('LoggedUser'))->first()];
+    //     return view('admin.staff', $data);
+    // }
 }
