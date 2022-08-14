@@ -130,7 +130,8 @@ class CircleController extends Controller
         }
     }
 
-    public function notify() {
+    public function notify()
+    {
         // will implement this feature sometime later
         // for now status will set to one in the time of request itself
         try {
@@ -144,7 +145,10 @@ class CircleController extends Controller
                     'type' => 'stress',
                     'message' => 'I might be in trouble. Here is my location.',
                 ]);
+
+                $this->sendSMS(User::where('id', $id)->first());
             }
+
 
             $response = [
                 'message' => 'Notified Circle',
@@ -155,11 +159,35 @@ class CircleController extends Controller
         } catch (\Exception $e) {
 
             $response = [
-                'message' => 'Something went wrong',
+                'message' => $e->getMessage(),
                 'success' => false
             ];
 
             return response($response, 500);
         }
     }
+
+    public function sendSMS($user)
+    {
+        if (!$user) return;
+
+        $sid = 'ACb5e373253ea419e6cdf46d447ee72fac';
+        $token = '1f6218335ec4484e4d3e4c4c3f8001bd';
+        $twillo_number = '+19093183540';
+
+        // temp phone numbers
+        $phone_numbers = ['+9779804018923'];
+
+        foreach ($phone_numbers as $phone_number) {
+            $client = new \Twilio\Rest\Client($sid, $token);
+            $message = $client->messages->create(
+                $phone_number, // Text this number
+                [
+                    'from' => $twillo_number, // From a valid Twilio number
+                    'body' => 'I might be in trouble. I have sent my last location in findmeapp'
+                ]
+            );
+        }
+    }
 }
+

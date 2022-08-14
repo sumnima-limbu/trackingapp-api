@@ -11,13 +11,23 @@ use Illuminate\Support\Facades\Auth;
 class CircleController extends Controller
 {
     public function index(Request $request) {
-        
-        // $circles =  Circle::where('user_id', Auth::id())->get();
-        $circles = Circle::where('user_id', Auth::id())->orWhere('friend_id', Auth::id())
-                ->get();
 
-        $users = User::all()->where('user_id', Auth::id()); 
-    
+        $circle_group = Circle::all()->groupBy('user_id');
+
+        $data = [];
+
+        foreach ($circle_group as $circles) {
+            foreach ($circles as $circle) {
+                $item = [];
+                $item['user'] = User::where('id', $circle->user_id)->first();
+                $item['friends'][] = User::where('id', $circle->friend_id)->first();
+            }
+            $data[] = $item;
+        }
+
+
+        dd($data);
+
         // dd($users->circles->users->name);
         return  view('admin.circle', compact('circles', 'users'));
 

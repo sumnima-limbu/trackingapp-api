@@ -10,25 +10,25 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function index() {
-        $users = User::all()->where('user_id' , Auth::id());
+        $users = User::all();
 
-        return view('admin.user', compact('users', $users));
+        return view('admin.user', compact('users'));
     }
 
     public function create(Request $request) {
         return view('admin.addUser');
     }
-    
+
     public function store(Request $request) {
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'date_of_birth' => 'required|date',
-            'phone_number' => 'required|numeric|min:10',            
+            'phone_number' => 'required|numeric|min:10',
             'password' => 'required|string|confirmed',
         ]);
 
-        
+
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -36,7 +36,7 @@ class UserController extends Controller
             'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
         ]);
-        
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
@@ -51,9 +51,9 @@ class UserController extends Controller
             return back()->with('fail', 'Something went wrong. Try again later');
         }
     }
-    
+
     public function destroy(Request $request) {
-        
+
         User::find($request->id)->delete();
         return redirect()->route('admin.user')->with('success', 'User deleted successfully');
     }
